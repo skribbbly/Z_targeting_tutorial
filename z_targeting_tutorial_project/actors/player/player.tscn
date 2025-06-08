@@ -1,0 +1,96 @@
+[gd_scene load_steps=5 format=3 uid="uid://dgxx7mc2pdlx7"]
+
+[ext_resource type="Script" uid="uid://cuhhayomxmukk" path="res://actors/player/player.gd" id="1_ilk7j"]
+[ext_resource type="PackedScene" uid="uid://c4sl6x4j3c10q" path="res://assets/example_character/example_character.gltf" id="1_nvxhs"]
+[ext_resource type="Script" uid="uid://bndp5btv6xhc7" path="res://actors/player/camera.gd" id="3_ax26v"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_nvxhs"]
+radius = 0.2
+height = 1.4
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_ilk7j")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+shape = SubResource("CapsuleShape3D_nvxhs")
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 1.2, 0)
+script = ExtResource("3_ax26v")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Node3D"]
+spring_length = 2.0
+
+[node name="Camera3D" type="Camera3D" parent="Node3D/SpringArm3D"]
+
+[node name="Mesh" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="example_character" parent="Mesh" instance=ExtResource("1_nvxhs")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -0.9, 0)
+
+[node name="ThighL" type="LookAtModifier3D" parent="Mesh/example_character/Armature/Skeleton3D" index="3"]
+target_node = NodePath("../../../../../Ankle/Knee")
+bone_name = "DEF-thigh.L"
+bone = 3
+forward_axis = 2
+primary_rotation_axis = 0
+origin_from = 1
+origin_bone_name = "DEF-thigh.L"
+origin_bone = 3
+
+[node name="ShinL" type="LookAtModifier3D" parent="Mesh/example_character/Armature/Skeleton3D" index="4"]
+target_node = NodePath("../../../../../Ankle")
+bone_name = "DEF-shin.L"
+bone = 4
+forward_axis = 2
+primary_rotation_axis = 0
+origin_from = 1
+origin_bone_name = "DEF-shin.L"
+origin_bone = 4
+use_angle_limitation = true
+symmetry_limitation = true
+primary_limit_angle = 4.76021
+primary_damp_threshold = 1.0
+secondary_limit_angle = 6.28319
+secondary_damp_threshold = 1.0
+
+[node name="FootL" type="LookAtModifier3D" parent="Mesh/example_character/Armature/Skeleton3D" index="5"]
+target_node = NodePath("../../../../../Ankle/Foot")
+bone_name = "DEF-foot.L"
+bone = 5
+forward_axis = 2
+primary_rotation_axis = 0
+origin_from = 1
+origin_bone_name = "DEF-foot.L"
+origin_bone = 5
+use_angle_limitation = true
+symmetry_limitation = true
+primary_limit_angle = 2.4562
+primary_damp_threshold = 1.0
+secondary_limit_angle = 6.28319
+secondary_damp_threshold = 1.0
+
+[node name="AnimationPlayer" parent="Mesh/example_character" index="1"]
+autoplay = "Idle"
+
+[node name="Ankle" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, -2.6077e-08, 1.3745e-15, -3.26626e-16, 0.929236, -0.369487, -2.0778e-15, 0.369487, 0.929236, -0.105359, 0.536872, -0.0820654)
+radius = 0.0551915
+radial_segments = 6
+rings = 4
+
+[node name="Knee" type="CSGSphere3D" parent="Ankle"]
+transform = Transform3D(-0.147641, 0.0203142, -0.988832, 0.0029998, 0.999793, 0.0200915, 0.989037, -7.45058e-08, -0.147671, 0.0106936, 0.0682505, -0.367229)
+radius = 0.0551915
+radial_segments = 6
+rings = 4
+
+[node name="Foot" type="CSGSphere3D" parent="Ankle"]
+transform = Transform3D(0.0496295, -0.0281612, -0.998371, 0.000619739, 0.999602, -0.0281652, 0.998767, 0.000778884, 0.0496272, 0.0016349, 0.0533316, 0.132473)
+radius = 0.0551915
+radial_segments = 6
+rings = 4
+
+[editable path="Mesh/example_character"]
