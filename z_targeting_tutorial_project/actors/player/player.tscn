@@ -1,12 +1,66 @@
-[gd_scene load_steps=5 format=3 uid="uid://dgxx7mc2pdlx7"]
+[gd_scene load_steps=13 format=3 uid="uid://dgxx7mc2pdlx7"]
 
 [ext_resource type="Script" uid="uid://cuhhayomxmukk" path="res://actors/player/player.gd" id="1_ilk7j"]
-[ext_resource type="PackedScene" uid="uid://c4sl6x4j3c10q" path="res://assets/example_character/example_character.gltf" id="1_nvxhs"]
+[ext_resource type="PackedScene" uid="uid://dfew5khgqwqsa" path="res://assets/example_character/example_character.gltf" id="1_nvxhs"]
 [ext_resource type="Script" uid="uid://bndp5btv6xhc7" path="res://actors/player/camera.gd" id="3_ax26v"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_nvxhs"]
 radius = 0.2
 height = 1.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ax26v"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ax26v"]
+animation = &"Run_KEY_02"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_lsqbn"]
+animation = &"Run_KEY_03"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6p1w3"]
+animation = &"Run_KEY_05"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_15y17"]
+animation = &"Run_KEY_01"
+
+[sub_resource type="Curve" id="Curve_ax26v"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="AnimationNodeTransition" id="AnimationNodeTransition_a744p"]
+xfade_time = 0.1
+xfade_curve = SubResource("Curve_ax26v")
+input_0/name = "Run_01"
+input_0/auto_advance = false
+input_0/break_loop_at_end = false
+input_0/reset = true
+input_1/name = "Run_02"
+input_1/auto_advance = false
+input_1/break_loop_at_end = false
+input_1/reset = true
+input_2/name = "Run_03"
+input_2/auto_advance = false
+input_2/break_loop_at_end = false
+input_2/reset = true
+input_3/name = "Run_04"
+input_3/auto_advance = false
+input_3/break_loop_at_end = false
+input_3/reset = true
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_388e2"]
+graph_offset = Vector2(-548.328, 86.6756)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_15y17")
+nodes/Animation/position = Vector2(-620, 220)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_ax26v")
+"nodes/Animation 2/position" = Vector2(-800, 320)
+"nodes/Animation 3/node" = SubResource("AnimationNodeAnimation_lsqbn")
+"nodes/Animation 3/position" = Vector2(-840, 480)
+"nodes/Animation 4/node" = SubResource("AnimationNodeAnimation_6p1w3")
+"nodes/Animation 4/position" = Vector2(-700, 580)
+nodes/Run/node = SubResource("AnimationNodeTransition_a744p")
+nodes/Run/position = Vector2(-80, 220)
+node_connections = [&"Run", 0, &"Animation", &"Run", 1, &"Animation 4", &"Run", 2, &"Animation 3", &"Run", 3, &"Animation 2", &"output", 0, &"Run"]
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_ilk7j")
@@ -25,72 +79,72 @@ spring_length = 2.0
 [node name="Camera3D" type="Camera3D" parent="Node3D/SpringArm3D"]
 
 [node name="Mesh" type="Node3D" parent="."]
+
+[node name="COG" type="Node3D" parent="Mesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 
-[node name="example_character" parent="Mesh" instance=ExtResource("1_nvxhs")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -0.9, 0)
+[node name="example_character" parent="Mesh/COG" instance=ExtResource("1_nvxhs")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, -0.9, 0)
 
-[node name="ThighL" type="LookAtModifier3D" parent="Mesh/example_character/Armature/Skeleton3D" index="3"]
-target_node = NodePath("../../../../../Ankle/Knee")
-bone_name = "DEF-thigh.L"
-bone = 3
-forward_axis = 2
-primary_rotation_axis = 0
-origin_from = 1
-origin_bone_name = "DEF-thigh.L"
-origin_bone = 3
+[node name="SpringBoneSimulator3D" type="SpringBoneSimulator3D" parent="Mesh/COG/example_character/Armature/Skeleton3D" index="3"]
+setting_count = 1
+settings/0/root_bone_name = "DEF-cloak_hood"
+settings/0/root_bone = 56
+settings/0/end_bone_name = "DEF-cloak_hood.002"
+settings/0/end_bone = 59
+settings/0/extend_end_bone = false
+settings/0/center_from = 0
+settings/0/individual_config = false
+settings/0/rotation_axis = 3
+settings/0/radius/value = 0.02
+settings/0/radius/damping_curve = null
+settings/0/stiffness/value = 1.0
+settings/0/stiffness/damping_curve = null
+settings/0/drag/value = 0.85
+settings/0/drag/damping_curve = null
+settings/0/gravity/value = 1.0
+settings/0/gravity/damping_curve = null
+settings/0/gravity/direction = Vector3(0, -1, 0)
+settings/0/enable_all_child_collisions = true
+settings/0/exclude_collision_count = 0
 
-[node name="ShinL" type="LookAtModifier3D" parent="Mesh/example_character/Armature/Skeleton3D" index="4"]
-target_node = NodePath("../../../../../Ankle")
-bone_name = "DEF-shin.L"
-bone = 4
-forward_axis = 2
-primary_rotation_axis = 0
-origin_from = 1
-origin_bone_name = "DEF-shin.L"
-origin_bone = 4
-use_angle_limitation = true
-symmetry_limitation = true
-primary_limit_angle = 4.76021
-primary_damp_threshold = 1.0
-secondary_limit_angle = 6.28319
-secondary_damp_threshold = 1.0
-
-[node name="FootL" type="LookAtModifier3D" parent="Mesh/example_character/Armature/Skeleton3D" index="5"]
-target_node = NodePath("../../../../../Ankle/Foot")
-bone_name = "DEF-foot.L"
-bone = 5
-forward_axis = 2
-primary_rotation_axis = 0
-origin_from = 1
-origin_bone_name = "DEF-foot.L"
-origin_bone = 5
-use_angle_limitation = true
-symmetry_limitation = true
-primary_limit_angle = 2.4562
-primary_damp_threshold = 1.0
-secondary_limit_angle = 6.28319
-secondary_damp_threshold = 1.0
-
-[node name="AnimationPlayer" parent="Mesh/example_character" index="1"]
+[node name="AnimationPlayer" parent="Mesh/COG/example_character" index="1"]
 autoplay = "Idle"
 
-[node name="Ankle" type="CSGSphere3D" parent="."]
-transform = Transform3D(1, -2.6077e-08, 1.3745e-15, -3.26626e-16, 0.929236, -0.369487, -2.0778e-15, 0.369487, 0.929236, -0.105359, 0.536872, -0.0820654)
-radius = 0.0551915
-radial_segments = 6
-rings = 4
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Mesh"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 8.88178e-16, 1, 0, 0.5, 0)
+height = 0.055
+material = SubResource("StandardMaterial3D_ax26v")
 
-[node name="Knee" type="CSGSphere3D" parent="Ankle"]
-transform = Transform3D(-0.147641, 0.0203142, -0.988832, 0.0029998, 0.999793, 0.0200915, 0.989037, -7.45058e-08, -0.147671, 0.0106936, 0.0682505, -0.367229)
-radius = 0.0551915
-radial_segments = 6
-rings = 4
+[node name="RayCast3D" type="RayCast3D" parent="Mesh/CSGCylinder3D"]
+transform = Transform3D(-4.37114e-08, 1, -8.88178e-16, -1, -4.37114e-08, 8.88179e-16, 8.88178e-16, 8.88178e-16, 1, 0, 0, 0)
+target_position = Vector3(0, -0.53, 0)
+collide_with_areas = true
 
-[node name="Foot" type="CSGSphere3D" parent="Ankle"]
-transform = Transform3D(0.0496295, -0.0281612, -0.998371, 0.000619739, 0.999602, -0.0281652, 0.998767, 0.000778884, 0.0496272, 0.0016349, 0.0533316, 0.132473)
-radius = 0.0551915
-radial_segments = 6
-rings = 4
+[node name="RayCast3D2" type="RayCast3D" parent="Mesh/CSGCylinder3D"]
+transform = Transform3D(-4.37114e-08, -4.37114e-08, 1, -1, -5.19474e-15, -4.37114e-08, 8.88178e-16, -1, -4.37114e-08, 0, 0, 0)
+target_position = Vector3(0, -0.53, 0)
+collide_with_areas = true
 
-[editable path="Mesh/example_character"]
+[node name="RayCast3D3" type="RayCast3D" parent="Mesh/CSGCylinder3D"]
+transform = Transform3D(-4.37114e-08, -1, -8.74227e-08, -1, 4.37114e-08, 2.68656e-16, -9.76996e-15, 8.74227e-08, -1, 0, 0, 0)
+target_position = Vector3(0, -0.53, 0)
+collide_with_areas = true
+
+[node name="RayCast3D4" type="RayCast3D" parent="Mesh/CSGCylinder3D"]
+transform = Transform3D(-4.37114e-08, 1.31134e-07, -1, -1, -5.73205e-15, 4.37114e-08, -2.66453e-15, 1, 1.31134e-07, 0, 0, 0)
+target_position = Vector3(0, -0.53, 0)
+collide_with_areas = true
+
+[node name="Node3D2" type="Node3D" parent="."]
+transform = Transform3D(0.994115, 0, -0.108329, 0.0872516, 0.592688, 0.800692, 0.0642053, -0.805432, 0.5892, -0.551703, 1.0197, -0.485364)
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../Mesh/COG/example_character")
+tree_root = SubResource("AnimationNodeBlendTree_388e2")
+anim_player = NodePath("../Mesh/COG/example_character/AnimationPlayer")
+parameters/Run/current_state = "Run_01"
+parameters/Run/transition_request = ""
+parameters/Run/current_index = 0
+
+[editable path="Mesh/COG/example_character"]
