@@ -49,18 +49,18 @@ func _process(delta: float) -> void:
 
 	var local_accel = cog.global_transform.basis.inverse() * velocity
 
-	var max_lean_angle = 40.0
+	var max_lean_angle = 20.0
 	var lean_strength = 0.5
 
-	var target_pitch : float = -max_lean_angle * clamp(velocity.length() / sprint_speed, 0.0, 1.0)
+	#var target_pitch : float = -max_lean_angle * clamp(velocity.length() / sprint_speed, 0.0, 1.0)
 	var target_roll  : float = -local_accel.x * (max_lean_angle * clamp(velocity.length() / sprint_speed, 0.0, 1.0))
 
 	if velocity.length() < 0.5:
-		target_pitch = 0
+		#target_pitch = 0
 		target_roll = 0
 
 	var target_rot = cog.rotation_degrees
-	target_rot.x = lerp(target_rot.x, target_pitch, 5 * delta)
+	#target_rot.x = lerp(target_rot.x, target_pitch, 5 * delta)
 	target_rot.z = lerp(target_rot.z, target_roll, 5 * delta)
 
 	cog.rotation_degrees = target_rot
@@ -81,11 +81,16 @@ func _physics_process(delta: float) -> void:
 	
 	direction = Vector3(input_vec.x, 0, input_vec.y).rotated(Vector3.UP, h_rot).normalized()
 	
+	
+	
+	
 	if input_vec != Vector2.ZERO:
 		move_vec = move_vec.move_toward(direction * speed, accel * delta)
 	else:
 		move_vec = move_vec.move_toward(Vector3.ZERO, resist * delta)
 	
+	
+	anim.set("parameters/RunBlend/blend_amount", clamp(move_vec.length() / speed, 0.0, 1.0))
 	
 	previous_pos = position
 	
@@ -93,29 +98,3 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 	
-	process_animation()
-	
-	var angular_velocity = velocity.length() / $Mesh/CSGCylinder3D.radius
-	var rotation_axis = velocity.normalized().cross(Vector3.UP)  # axis perpendicular to movement
-	
-	var rotation_amount = angular_velocity * delta
-	$Mesh/CSGCylinder3D.rotate_x(-rotation_amount)
-
-
-func process_animation():
-	
-	if velocity != Vector3.ZERO:
-		
-		
-		if $Mesh/CSGCylinder3D/RayCast3D.is_colliding():
-			anim.set("parameters/Run/transition_request", "Run_01")
-			
-		if $Mesh/CSGCylinder3D/RayCast3D2.is_colliding():
-			anim.set("parameters/Run/transition_request", "Run_02")
-			
-		if $Mesh/CSGCylinder3D/RayCast3D3.is_colliding():
-			anim.set("parameters/Run/transition_request", "Run_03")
-			
-		
-		if $Mesh/CSGCylinder3D/RayCast3D4.is_colliding():
-			anim.set("parameters/Run/transition_request", "Run_04")
