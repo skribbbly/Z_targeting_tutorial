@@ -1,0 +1,69 @@
+[gd_scene load_steps=11 format=3 uid="uid://crctid02dfjrw"]
+
+[ext_resource type="Script" uid="uid://bbbww7x5e4dsp" path="res://actors/enemy/enemy.gd" id="1_hptor"]
+[ext_resource type="PackedScene" uid="uid://dnnd1c600hjq0" path="res://assets/example_enemy/example_enemy.gltf" id="1_jqx28"]
+[ext_resource type="Texture2D" uid="uid://bqmxfr6po4n8n" path="res://assets/example_enemy/chain_mail.png" id="2_r6xaq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hptor"]
+metallic = 1.0
+roughness = 0.7
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ooidh"]
+metallic = 1.0
+roughness = 0.7
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bnhc7"]
+albedo_texture = ExtResource("2_r6xaq")
+metallic = 1.0
+roughness = 0.49
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_r6xaq"]
+radius = 0.2
+height = 1.4
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jqx28"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_r6xaq"]
+graph_offset = Vector2(-301, 28)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_jqx28")
+nodes/Animation/position = Vector2(-240, 180)
+node_connections = [&"output", 0, &"Animation"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_r6xaq"]
+
+[node name="Enemy" type="CharacterBody3D" groups=["Targetable"]]
+collision_layer = 17
+collision_mask = 17
+script = ExtResource("1_hptor")
+
+[node name="example_enemy" parent="." instance=ExtResource("1_jqx28")]
+
+[node name="Rig" parent="example_enemy" index="0"]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
+
+[node name="Sphere" parent="example_enemy/Rig/Skeleton3D" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_hptor")
+
+[node name="Sphere_001" parent="example_enemy/Rig/Skeleton3D" index="1"]
+surface_material_override/0 = SubResource("StandardMaterial3D_ooidh")
+
+[node name="TownGuard" parent="example_enemy/Rig/Skeleton3D" index="2"]
+surface_material_override/1 = SubResource("StandardMaterial3D_bnhc7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+shape = SubResource("CapsuleShape3D_r6xaq")
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../example_enemy")
+tree_root = SubResource("AnimationNodeBlendTree_r6xaq")
+anim_player = NodePath("../example_enemy/AnimationPlayer")
+
+[node name="TargetPoint" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TargetPoint"]
+shape = SubResource("SphereShape3D_r6xaq")
+
+[editable path="example_enemy"]

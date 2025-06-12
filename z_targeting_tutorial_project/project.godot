@@ -13,11 +13,16 @@ config_version=5
 config/name="z_targeting_tutorial_project"
 run/main_scene="uid://7unnaspd6kqx"
 config/features=PackedStringArray("4.4", "Forward Plus")
+run/max_fps=60
 config/icon="res://icon.svg"
 
 [dotnet]
 
 project/assembly_name="z_targeting_tutorial_project"
+
+[global_group]
+
+Targetable="anything the player can target"
 
 [input]
 
@@ -41,3 +46,20 @@ right={
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":68,"key_label":0,"unicode":100,"location":0,"echo":false,"script":null)
 ]
 }
+target={
+"deadzone": 0.2,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":3,"canceled":false,"pressed":false,"double_click":false,"script":null)
+]
+}
+
+[layer_names]
+
+3d_physics/layer_1="World"
+3d_physics/layer_2="Player"
+3d_physics/layer_5="Enemy"
+
+[rendering]
+
+lights_and_shadows/directional_shadow/size=16384
+lights_and_shadows/directional_shadow/size.mobile=5423
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality=5

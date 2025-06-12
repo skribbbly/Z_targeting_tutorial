@@ -1,11 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://7unnaspd6kqx"]
+[gd_scene load_steps=9 format=3 uid="uid://7unnaspd6kqx"]
 
 [ext_resource type="PackedScene" uid="uid://dgxx7mc2pdlx7" path="res://actors/player/player.tscn" id="1_8xru0"]
 [ext_resource type="Texture2D" uid="uid://6njj2ef5at2f" path="res://assets/test_texture.jpg" id="1_kxljb"]
+[ext_resource type="Texture2D" uid="uid://bh3ggygvuna5b" path="res://assets/cloud.png" id="1_y1kpu"]
+[ext_resource type="PackedScene" uid="uid://crctid02dfjrw" path="res://actors/enemy/enemy.tscn" id="4_vaubn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8xru0"]
-sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
-ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+sky_top_color = Color(0.359497, 0.562801, 0.742188, 1)
+sky_horizon_color = Color(0.722656, 0.882996, 1, 1)
+sky_cover = ExtResource("1_y1kpu")
+ground_bottom_color = Color(0.375, 0.309917, 0.197754, 1)
+ground_horizon_color = Color(0.603922, 0.776471, 0.901961, 1)
 
 [sub_resource type="Sky" id="Sky_kxljb"]
 sky_material = SubResource("ProceduralSkyMaterial_8xru0")
@@ -14,7 +19,13 @@ sky_material = SubResource("ProceduralSkyMaterial_8xru0")
 background_mode = 2
 sky = SubResource("Sky_kxljb")
 tonemap_mode = 2
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_use_occlusion = true
+sdfgi_y_scale = 0
 glow_enabled = true
+glow_normalized = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y1kpu"]
 albedo_color = Color(0.27816, 0.285156, 0.27179, 1)
@@ -30,16 +41,33 @@ environment = SubResource("Environment_y1kpu")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+light_color = Color(1, 0.977539, 0.910156, 1)
+light_energy = 1.1
 shadow_enabled = true
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
 use_collision = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
-size = Vector3(32, 1, 32)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00371838, -0.459706, -0.00574303)
+size = Vector3(1000, 1, 1000)
 material = SubResource("StandardMaterial3D_y1kpu")
 
 [node name="Player" parent="." instance=ExtResource("1_8xru0")]
 ground_accel = 20.0
 ground_resist = 10.0
+
+[node name="Enemy" parent="." instance=ExtResource("4_vaubn")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -5.63925)
+
+[node name="Enemy2" parent="." instance=ExtResource("4_vaubn")]
+transform = Transform3D(-0.258819, 0, -0.965926, 0, 1, 0, 0.965926, 0, -0.258819, -5, 0, -3.63925)
+
+[node name="Enemy3" parent="." instance=ExtResource("4_vaubn")]
+transform = Transform3D(-0.258819, 0, -0.965926, 0, 1, 0, 0.965926, 0, -0.258819, 6, 0, -3.63925)
+
+[node name="Enemy4" parent="." instance=ExtResource("4_vaubn")]
+transform = Transform3D(-0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, -0.965926, 6, 0, -10.6393)
+
+[node name="Enemy5" parent="." instance=ExtResource("4_vaubn")]
+transform = Transform3D(-0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, -0.965926, -8, 0, -12.6393)
